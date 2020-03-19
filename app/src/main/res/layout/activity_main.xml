@@ -6,80 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="229dp"
-        android:layout_height="34dp"
-        android:text="Numéro de téléphone"
-        android:textColor="#040404"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/numText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78" />
-
-    <EditText
-        android:id="@+id/numText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19999999" />
-
     <Button
-        android:id="@+id/numButton"
+        android:id="@+id/loginTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="onClickSavePhoneNum"
-        android:text="Envoie"
+        android:onClick="OnClick"
+        android:text="Valider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numText"
-        app:layout_constraintVertical_bias="0.00999999" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.619" />
 
     <EditText
-        android:id="@+id/verifText"
+        android:id="@+id/mailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="E-mail"
+        android:textColor="#6A6868"
+        app:layout_constraintBottom_toTopOf="@+id/passwordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73" />
+        app:layout_constraintVertical_bias="0.875" />
 
-    <TextView
-        android:id="@+id/textView4"
+    <EditText
+        android:id="@+id/passwordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vérification"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/verifText"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Mot de Passe"
+        android:textColor="#6A6868"
+        app:layout_constraintBottom_toTopOf="@+id/loginTest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.93" />
+        app:layout_constraintVertical_bias="0.682" />
 
-    <Button
-        android:id="@+id/verifButton"
+    <CheckBox
+        android:id="@+id/isParentCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onClickVerifField"
-        android:text="Envoie"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Compte parent ?"
+        app:layout_constraintBottom_toTopOf="@+id/loginTest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verifText"
-        app:layout_constraintVertical_bias="0.16000003" />
-
+        app:layout_constraintTop_toBottomOf="@+id/passwordText"
+        app:layout_constraintVertical_bias="0.238" />
 </androidx.constraintlayout.widget.ConstraintLayout>
