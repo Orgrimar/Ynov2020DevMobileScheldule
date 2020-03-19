@@ -1,0 +1,2 @@
+rootProject.name='Ynov2020_DevMobile_Scheldule'
+include ':app'
