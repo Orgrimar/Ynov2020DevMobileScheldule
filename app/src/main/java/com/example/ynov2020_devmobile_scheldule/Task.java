@@ -12,8 +12,8 @@ public class Task {
     private int nbrRappels;
     private boolean estFinie;
 
-    public Task() {
-        this.titre = "Titre";
+    public Task(String pfTitre) {
+        this.titre = pfTitre;
         this.duree = new Time(1,0,0);
         this.desc = "Une tache";
         this.recurrence = null;
