@@ -3,6 +3,7 @@ package com.example.ynov2020_devmobile_scheldule;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AuthentificationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "EmailPassword";
+    private static final String TAG = "Authentification Activity";
 
     private TextView mStatusTextView;
     private TextView mDetailTextView;
@@ -112,7 +113,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
         });
     }
 
-    private void signOut() {
+    public void signOut() {
         mAuth.signOut();
         updateUI(null);
     }
@@ -188,6 +189,9 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
             } else {
                 findViewById(R.id.verifyEmailButton).setVisibility(View.VISIBLE);
             }
+
+            Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
+            startActivity(intent);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
@@ -212,5 +216,11 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
         } else if (i == R.id.reloadButton) {
             reload();
         }
+    }
+
+    public void onDestroy() {
+        mAuth.signOut();
+        updateUI(null);
+        super.onDestroy();
     }
 }
