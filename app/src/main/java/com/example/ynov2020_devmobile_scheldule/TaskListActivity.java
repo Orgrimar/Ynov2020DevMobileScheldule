@@ -1,13 +1,19 @@
 package com.example.ynov2020_devmobile_scheldule;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,5 +48,41 @@ public class TaskListActivity extends AppCompatActivity {
             tab.add(new Task("Tâche "+ i));
         }
         lv.setAdapter(tab);
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long id)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(TaskListActivity.this);
+                builder.setTitle("Title");
+                builder.setMessage("Message");
+
+                builder.setPositiveButton("Supprimer la tâche", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        //Suppression de l'item
+                    }
+                });
+
+                builder.setNegativeButton("Modifier la tâche", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        //Annuler
+                    }
+                });
+
+                builder.show();
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View vue, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, vue, menuInfo);
+        menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Supprimer cet élément");
+        menu.add(Menu.NONE, Menu.FIRST +1, Menu.NONE, "Retour");
     }
 }
