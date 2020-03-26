@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class AuthentificationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_authenfication);
         //setProgressBar(R.id.progressBar);
 
         // Views
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     updateUI(user);
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
                 //hideProgressBar();
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     updateUI(user);
                 } else {
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
-                    Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
 
@@ -127,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 findViewById(R.id.verifyEmailButton).setEnabled(true);
 
                 if (task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this,"Verification email sent to " + user.getEmail(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this,"Verification email sent to " + user.getEmail(),Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "sendEmailVerification", task.getException());
-                    Toast.makeText(MainActivity.this,"Failed to send verification email.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this,"Failed to send verification email.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -142,10 +142,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     updateUI(mAuth.getCurrentUser());
-                    Toast.makeText(MainActivity.this,"Reload successful!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this,"Reload successful!",Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "reload", task.getException());
-                    Toast.makeText(MainActivity.this,"Failed to reload user.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this,"Failed to reload user.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
