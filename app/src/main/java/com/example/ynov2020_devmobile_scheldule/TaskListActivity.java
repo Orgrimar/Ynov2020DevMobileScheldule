@@ -38,10 +38,8 @@ public class TaskListActivity extends AppCompatActivity {
         ArrayAdapter<Task> tab =
                 new ArrayAdapter<>(lv.getContext(), R.layout.task_layout, R.id.title);
         for(int i = 0 ; i < 40 ; i ++){
+            //Remplacer par l'ajout de tâches qui sont en BDD
             tab.add(new Task("Tâche "+ i));
-        }
-        if(intent.getParcelableExtra("Task") != null){
-            tab.add((Task)intent.getParcelableExtra("Task"));
         }
         lv.setAdapter(tab);
     }

@@ -10,7 +10,7 @@
         android:id="@+id/TitleNew"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:text="Titre"
+        android:hint="Titre"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="time"
-        android:text="Durée"
+        android:hint="Durée de la tâche"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TitleNew" />
 
@@ -28,7 +28,8 @@
         android:id="@+id/calendarView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:saveEnabled="true"
+        android:animationCache="true"
+        android:clickable="true"
         app:layout_constraintTop_toBottomOf="@+id/rappels" />
 
     <EditText
@@ -36,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Description"
+        android:hint="Description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView2" />
 
@@ -46,7 +47,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
-        android:text="Nombre de rappels"
+        android:hint="Nombre de rappels"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Duree" />
 
@@ -62,4 +63,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="sendData"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/Duree"
+        app:layout_constraintTop_toTopOf="@id/Duree"
+        android:entries="@array/time__arrays"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

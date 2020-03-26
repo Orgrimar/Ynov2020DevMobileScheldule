@@ -9,6 +9,12 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AddTaskActivity extends AppCompatActivity {
 
     @Override
@@ -17,16 +23,26 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
     }
 
-    protected void sendData(View view){
+    protected void sendData(View view) throws ParseException {
         EditText etTitle = findViewById(R.id.TitleNew);
+        String title = etTitle.getText().toString();
+
         EditText etDuree = findViewById(R.id.Duree);
+        String duree = etDuree.getText().toString();
+        DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        Date date = sdf.parse(duree);
+        if(date == null){
+            throw new ParseException("date is NULL", 1);
+        }
         EditText etDesc = findViewById(R.id.Desc);
+        String desc = etDesc.getText().toString();
+
         EditText etRappels = findViewById(R.id.rappels);
-        CalendarView cv = findViewById(R.id.calendarView2);
-        //Task newTask = new Task(etTitle.getText().toString(), etDuree.getText().toString(), etDesc.getText().toString(), );
-        Task newTask = new Task("Tâche ajoutée");
+        String rappel = etRappels.getText().toString();
+
+        Task newTask = new Task(title, (Time)date, desc, Integer.parseInt(rappel));
+        //Ajout BDD
         Intent intent = new Intent(AddTaskActivity.this, TaskListActivity.class);
-      //  intent.putExtra("Task", (Parcelable) newTask);
         startActivity(intent);
     }
 }

@@ -16,16 +16,16 @@ public class Task {
         this.titre = pfTitre;
         this.duree = new Time(1,0,0);
         this.desc = "Une tache";
-        this.recurrence = null;
+        this.recurrence = new Date[]{};
         this.nbrRappels = 1;
         this.estFinie = false;
     }
 
-    public Task(String pfTitre, Time pfDuree,String pfDesc, Date[] pfRecurrence, int pfNbrRappels){
+    public Task(String pfTitre, Time pfDuree,String pfDesc, int pfNbrRappels){
         this.titre = pfTitre;
         this.duree = pfDuree;
         this.desc = pfDesc;
-        this.recurrence = pfRecurrence;
+        this.recurrence = new Date[]{};
         this.nbrRappels = pfNbrRappels;
         this.estFinie = false;
     }
@@ -53,6 +53,8 @@ public class Task {
     public void setRecurrence(Date[] recurrence) {
         this.recurrence = recurrence;
     }
+
+    public void addRecurrence(Date pfDate){this.recurrence[-1] = pfDate;}
 
     public int getNbrRappels() {
         return nbrRappels;
