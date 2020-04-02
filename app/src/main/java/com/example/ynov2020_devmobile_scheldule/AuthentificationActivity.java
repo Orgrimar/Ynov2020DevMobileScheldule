@@ -3,6 +3,7 @@ package com.example.ynov2020_devmobile_scheldule;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -59,6 +60,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
         updateUI(currentUser);
     }
 
+    @SuppressLint("LongLogTag")
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
@@ -84,6 +86,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
         });
     }
 
+    @SuppressLint("LongLogTag")
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
@@ -123,6 +126,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
 
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @SuppressLint("LongLogTag")
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 findViewById(R.id.verifyEmailButton).setEnabled(true);
@@ -139,6 +143,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
 
     private void reload() {
         mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @SuppressLint("LongLogTag")
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
