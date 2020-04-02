@@ -14,10 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthentificationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -57,7 +63,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        updateUI(currentUser, false);
     }
 
     @SuppressLint("LongLogTag")
@@ -75,11 +81,11 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                 if (task.isSuccessful()) {
                     Log.d(TAG, "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user);
+                    updateUI(user, true);
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                     Toast.makeText(AuthentificationActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                    updateUI(null);
+                    updateUI(null, false);
                 }
                 //hideProgressBar();
             }
@@ -101,11 +107,11 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                 if (task.isSuccessful()) {
                     Log.d(TAG, "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user);
+                    updateUI(user, false);
                 } else {
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
                     Toast.makeText(AuthentificationActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                    updateUI(null);
+                    updateUI(null, false);
                 }
 
                 if (!task.isSuccessful()) {
@@ -118,7 +124,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
 
     public void signOut() {
         mAuth.signOut();
-        updateUI(null);
+        updateUI(null, false);
     }
 
     private void sendEmailVerification() {
@@ -147,7 +153,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    updateUI(mAuth.getCurrentUser());
+                    updateUI(mAuth.getCurrentUser(), false);
                     Toast.makeText(AuthentificationActivity.this,"Reload successful!",Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "reload", task.getException());
@@ -179,7 +185,9 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
         return valid;
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(FirebaseUser user, boolean newUser) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         //hideProgressBar();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,user.getEmail(), user.isEmailVerified()));
@@ -193,6 +201,22 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                 findViewById(R.id.verifyEmailButton).setVisibility(View.GONE);
             } else {
                 findViewById(R.id.verifyEmailButton).setVisibility(View.VISIBLE);
+            }
+
+            if (newUser == true) {
+                db.collection("role").document("ZNRy4uTqZZirxwQsozmA").update(user.getUid(),true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @SuppressLint("LongLogTag")
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot succefully update!");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @SuppressLint("LongLogTag")
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
             }
 
             Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
@@ -225,7 +249,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
 
     public void onDestroy() {
         mAuth.signOut();
-        updateUI(null);
+        updateUI(null, false);
         super.onDestroy();
     }
 }
