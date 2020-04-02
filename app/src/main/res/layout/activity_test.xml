@@ -6,33 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".TestActivity">
 
-    <TextView
-        android:id="@+id/status"
-        style="@style/ThemeOverlay.MyTextDetail"
-        android:text="@string/signed_out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/detail"
-        style="@style/ThemeOverlay.MyTextDetail"
-        app:layout_constraintEnd_toEndOf="@+id/status"
-        app:layout_constraintStart_toStartOf="@+id/status"
-        app:layout_constraintTop_toBottomOf="@+id/status"
-        tools:text="Firebase User ID: 123456789abc" />
-
     <Button
         android:id="@+id/logOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test"
         android:onClick="OnClick"
+        android:text="Test"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userMail" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.919" />
 
     <Button
         android:id="@+id/configButton"
@@ -45,4 +30,19 @@
         android:onClick="OnConfig"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/relationButton"
+        android:layout_width="71dp"
+        android:layout_height="30dp"
+        android:text="relation"
+        android:textSize="8sp"
+        android:onClick="OnRelation"
+        app:layout_constraintBottom_toBottomOf="@+id/configButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.897"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/configButton"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="OnClick" />
 </androidx.constraintlayout.widget.ConstraintLayout>
