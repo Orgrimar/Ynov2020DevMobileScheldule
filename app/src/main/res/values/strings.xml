@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ynov2020_DevMobile_Scheldule</string>
+    <string name="app_name">SheduleProject</string>
 
     <string-array name="time__arrays">
         <item>Minutes</item>

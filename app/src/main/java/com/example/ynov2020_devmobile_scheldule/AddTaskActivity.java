@@ -4,10 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
+
+import com.example.ynov2020_devmobile_scheldule.Models.UserTask;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -40,7 +40,7 @@ public class AddTaskActivity extends AppCompatActivity {
         EditText etRappels = findViewById(R.id.rappels);
         String rappel = etRappels.getText().toString();
 
-        Task newTask = new Task(title, (Time)date, desc, Integer.parseInt(rappel));
+        UserTask newUserTask = new UserTask(title, (Time)date, desc, Integer.parseInt(rappel));
         //Ajout BDD
         Intent intent = new Intent(AddTaskActivity.this, TaskListActivity.class);
         startActivity(intent);

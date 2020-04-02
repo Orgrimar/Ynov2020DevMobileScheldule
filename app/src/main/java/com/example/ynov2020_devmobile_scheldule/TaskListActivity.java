@@ -2,7 +2,8 @@ package com.example.ynov2020_devmobile_scheldule;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,10 +16,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.ynov2020_devmobile_scheldule.Models.UserTask;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.auth.User;
+
+import java.util.ArrayList;
 
 public class TaskListActivity extends AppCompatActivity {
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +33,6 @@ public class TaskListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String date = intent.getStringExtra("date");
         setContentView(R.layout.activity_task_list);
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,47 +42,34 @@ public class TaskListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        fab.hide();
+       fab.hide();
         if(true){
             fab.show();
         }
-        ListView lv = findViewById(R.id.listTask);
-        ArrayAdapter<Task> tab =
-                new ArrayAdapter<>(lv.getContext(), R.layout.task_layout, R.id.title);
-        for(int i = 0 ; i < 40 ; i ++){
-            //Remplacer par l'ajout de tâches qui sont en BDD
-            tab.add(new Task("Tâche "+ i));
+// use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.listTask);
+
+       // recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        ArrayList<UserTask> tabtask = new ArrayList<>();
+        for (int i = 0 ; i < 40 ; i++){
+            tabtask.add(new UserTask("Tâche " + i));
         }
-        lv.setAdapter(tab);
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-        {
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter(tabtask);
+        recyclerView.OnItemTouchListener(new MyAdapter.OnItemLongClickListener(){
+
             @Override
-            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long id)
-            {
-                AlertDialog.Builder builder = new AlertDialog.Builder(TaskListActivity.this);
-                builder.setTitle("Title");
-                builder.setMessage("Message");
-
-                builder.setPositiveButton("Supprimer la tâche", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface arg0, int arg1)
-                    {
-                        //Suppression de l'item
-                    }
-                });
-
-                builder.setNegativeButton("Modifier la tâche", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface arg0, int arg1)
-                    {
-                        //Annuler
-                    }
-                });
-
-                builder.show();
-                return true;
+            public boolean onItemLongClicked(int position) {
+                return false;
             }
         });
+        recyclerView.setAdapter(mAdapter);
+
     }
 
     @Override

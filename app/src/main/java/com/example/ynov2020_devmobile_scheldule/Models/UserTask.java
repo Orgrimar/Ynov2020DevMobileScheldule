@@ -1,10 +1,10 @@
-package com.example.ynov2020_devmobile_scheldule;
+package com.example.ynov2020_devmobile_scheldule.Models;
 
 import java.sql.Time;
 import java.util.Date;
 import java.util.Timer;
 
-public class Task {
+public class UserTask {
     private String titre;
     private Time duree;
     private String desc;
@@ -12,8 +12,8 @@ public class Task {
     private int nbrRappels;
     private boolean estFinie;
 
-    public Task(String pfTitre) {
-        this.titre = pfTitre;
+    public UserTask() {
+        this.titre = "";
         this.duree = new Time(1,0,0);
         this.desc = "Une tache";
         this.recurrence = new Date[]{};
@@ -21,7 +21,16 @@ public class Task {
         this.estFinie = false;
     }
 
-    public Task(String pfTitre, Time pfDuree,String pfDesc, int pfNbrRappels){
+    public UserTask(String pfTitre) {
+        this.titre = (String) pfTitre;
+        this.duree = new Time(1,0,0);
+        this.desc = "Une description de tâche";
+        this.recurrence = new Date[]{};
+        this.nbrRappels = 1;
+        this.estFinie = false;
+    }
+
+    public UserTask(String pfTitre, Time pfDuree, String pfDesc, int pfNbrRappels){
         this.titre = pfTitre;
         this.duree = pfDuree;
         this.desc = pfDesc;
