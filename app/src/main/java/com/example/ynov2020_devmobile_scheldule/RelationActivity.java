@@ -73,19 +73,21 @@ public class RelationActivity extends AppCompatActivity {
     }
 
     public void LoadListChildren(DocumentSnapshot src) {
+        int i = 0;
         Log.i(TAG, "Fonction de chargement de la liste des enfants.");
         ArrayList<String> relationValue = (ArrayList<String>) src.get(user.getUid());
         Log.d(TAG, relationValue.get(0));
         Log.d(TAG, relationValue.get(1));
         Log.d(TAG, String.valueOf(relationValue.size()));
         Log.i(TAG, "Début du Chargement de la donnée.");
-        for (int i = 0; i == relationValue.size(); i++) {
+        while (i<relationValue.size()) {
             Log.i(TAG, "Transfert data dans la liste.");
             Log.d(TAG, relationValue.get(i));
             listChildren.add(relationValue.get(i));
+            i++;
         }
         Log.i(TAG, "Fin du Chargement de la donnée.");
-        //Log.d(TAG, listChildren.getItem(1));
+        Log.d(TAG, listChildren.getItem(1));
         mListRelation.setAdapter(listChildren);
         Log.i(TAG, "Fin de la fonction.");
     }
