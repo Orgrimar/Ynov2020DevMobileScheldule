@@ -8,7 +8,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ynov2020_devmobile_scheldule.Models.UserTask;
+import com.google.firebase.firestore.CollectionReference;
+
 import java.util.ArrayList;
+
+import io.opencensus.tags.TagMetadata;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
@@ -23,7 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private ArrayList<UserTask> mDataset;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<UserTask> myDataset) {
+    public MyAdapter(ArrayList myDataset) {
         mDataset = myDataset;
     }
 
@@ -43,6 +47,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.tvTitle.setText(mDataset.get(position).getTitre());
+        //Remplacer par l'ID de la tâche
+        //holder.tvTitle.setTag(mDataset.get(position).getTitre());
         holder.tvDuree.setText(mDataset.get(position).getDuree().toString());
         holder.tvDesc.setText(mDataset.get(position).getDesc());
     }

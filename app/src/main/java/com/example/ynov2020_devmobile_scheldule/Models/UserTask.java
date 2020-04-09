@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Timer;
 
 public class UserTask {
+    private int id;
     private String titre;
     private Time duree;
     private String desc;
@@ -13,6 +14,7 @@ public class UserTask {
     private boolean estFinie;
 
     public UserTask() {
+        this.id = 0;
         this.titre = "";
         this.duree = new Time(1,0,0);
         this.desc = "Une tache";
@@ -22,6 +24,7 @@ public class UserTask {
     }
 
     public UserTask(String pfTitre) {
+        this.id = 0;
         this.titre = (String) pfTitre;
         this.duree = new Time(1,0,0);
         this.desc = "Une description de tâche";
@@ -31,6 +34,17 @@ public class UserTask {
     }
 
     public UserTask(String pfTitre, Time pfDuree, String pfDesc, int pfNbrRappels){
+        this.id = 0;
+        this.titre = pfTitre;
+        this.duree = pfDuree;
+        this.desc = pfDesc;
+        this.recurrence = new Date[]{};
+        this.nbrRappels = pfNbrRappels;
+        this.estFinie = false;
+    }
+
+    public UserTask(int pfId, String pfTitre, Time pfDuree, String pfDesc, int pfNbrRappels){
+        this.id = pfId;
         this.titre = pfTitre;
         this.duree = pfDuree;
         this.desc = pfDesc;
