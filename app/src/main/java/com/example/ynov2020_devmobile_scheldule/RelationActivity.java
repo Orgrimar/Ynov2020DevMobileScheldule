@@ -53,12 +53,7 @@ public class RelationActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data : " + document.get(user.getUid()));
-                        ArrayList<String> relationValue = (ArrayList<String>) document.get(user.getUid());
-                        for (int i = 0; i == relationValue.size(); i++) {
-                            Log.d(TAG, relationValue.get(i));
-                            listChildren.add(relationValue.get(i));
-                        }
-                        mListRelation.setAdapter(listChildren);
+                        LoadListChildren(document);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -75,5 +70,23 @@ public class RelationActivity extends AppCompatActivity {
 
     public void OnDeleteChildren(View view) {
         Log.d(TAG, user.getUid());
+    }
+
+    public void LoadListChildren(DocumentSnapshot src) {
+        Log.i(TAG, "Fonction de chargement de la liste des enfants.");
+        ArrayList<String> relationValue = (ArrayList<String>) src.get(user.getUid());
+        Log.d(TAG, relationValue.get(0));
+        Log.d(TAG, relationValue.get(1));
+        Log.d(TAG, String.valueOf(relationValue.size()));
+        Log.i(TAG, "Début du Chargement de la donnée.");
+        for (int i = 0; i == relationValue.size(); i++) {
+            Log.i(TAG, "Transfert data dans la liste.");
+            Log.d(TAG, relationValue.get(i));
+            listChildren.add(relationValue.get(i));
+        }
+        Log.i(TAG, "Fin du Chargement de la donnée.");
+        //Log.d(TAG, listChildren.getItem(1));
+        mListRelation.setAdapter(listChildren);
+        Log.i(TAG, "Fin de la fonction.");
     }
 }
