@@ -35,14 +35,15 @@
         android:id="@+id/relationButton"
         android:layout_width="71dp"
         android:layout_height="30dp"
+        android:onClick="OnRelation"
         android:text="relation"
         android:textSize="8sp"
-        android:onClick="OnRelation"
         app:layout_constraintBottom_toBottomOf="@+id/configButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.897"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/configButton"
         app:layout_constraintVertical_bias="1.0"
-        tools:ignore="OnClick" />
+        tools:ignore="OnClick"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

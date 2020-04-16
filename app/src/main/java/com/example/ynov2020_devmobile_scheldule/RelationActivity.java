@@ -1,34 +1,29 @@
 package com.example.ynov2020_devmobile_scheldule;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class RelationActivity extends AppCompatActivity {
 
     final static String TAG = "RelationActivity";
 
-    private ListView mListRelation;
+    private RecyclerView mListRelation;
     ArrayAdapter<String> listChildren;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -39,7 +34,7 @@ public class RelationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relation);
 
-        mListRelation = (ListView) findViewById(R.id.listRelation);
+        mListRelation = (RecyclerView) findViewById(R.id.listRelation);
         listChildren = new ArrayAdapter<String>(mListRelation.getContext(), R.layout.activity_relation, R.id.listRelation);
     }
 
@@ -74,21 +69,14 @@ public class RelationActivity extends AppCompatActivity {
 
     public void LoadListChildren(DocumentSnapshot src) {
         int i = 0;
-        Log.i(TAG, "Fonction de chargement de la liste des enfants.");
+
         ArrayList<String> relationValue = (ArrayList<String>) src.get(user.getUid());
-        Log.d(TAG, relationValue.get(0));
-        Log.d(TAG, relationValue.get(1));
-        Log.d(TAG, String.valueOf(relationValue.size()));
-        Log.i(TAG, "Début du Chargement de la donnée.");
         while (i<relationValue.size()) {
-            Log.i(TAG, "Transfert data dans la liste.");
             Log.d(TAG, relationValue.get(i));
             listChildren.add(relationValue.get(i));
             i++;
         }
-        Log.i(TAG, "Fin du Chargement de la donnée.");
         Log.d(TAG, listChildren.getItem(1));
-        mListRelation.setAdapter(listChildren);
-        Log.i(TAG, "Fin de la fonction.");
+        //mListRelation.setAdapter(listChildren);
     }
 }

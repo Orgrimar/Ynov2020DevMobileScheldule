@@ -39,30 +39,6 @@ public class TestActivity extends AppCompatActivity {
     public void OnStart() {
         super.onStart();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        db.collection("role").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, "Parent => " + document.get(user.getUid()));
-                        if ((Boolean) document.get(user.getUid()) == true) {
-                            isParent = true;
-                        }
-
-                        if (isParent == true) {
-                            Log.d(TAG, "Parent is connected.");
-                            findViewById(R.id.relationButton).setVisibility(View.VISIBLE);
-                        } else {
-                            Log.d(TAG, "Children is connected.");
-                            findViewById(R.id.relationButton).setVisibility(View.GONE);
-                        }
-                    }
-                } else {
-                    Log.w(TAG, "Error getting documents.", task.getException());
-                }
-            }
-        });
     }
 
     public void OnClick(View view) {
