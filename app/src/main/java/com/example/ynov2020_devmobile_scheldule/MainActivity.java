@@ -42,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // --------------------
-    // ERROR HANDLER
-    // --------------------
-
     protected OnFailureListener onFailureListener(){
         return new OnFailureListener() {
             @Override

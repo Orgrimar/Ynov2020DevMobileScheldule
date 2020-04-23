@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ynov2020_devmobile_scheldule.Models.UserTask;
 import com.google.firebase.firestore.CollectionReference;
@@ -15,23 +17,12 @@ import java.util.ArrayList;
 import io.opencensus.tags.TagMetadata;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-
-    public interface OnItemClickListener {
-        public void onItemClicked(int position);
-    }
-
-    public interface OnItemLongClickListener {
-        public boolean onItemLongClicked(int position);
-    }
-
     private ArrayList<UserTask> mDataset;
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public MyAdapter(ArrayList myDataset) {
         mDataset = myDataset;
     }
 
-    // Create new views (invoked by the layout manager)
     @NonNull
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,13 +35,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         holder.tvTitle.setText(mDataset.get(position).getTitre());
-        //Remplacer par l'ID de la tâche
-        //holder.tvTitle.setTag(mDataset.get(position).getTitre());
+        holder.layout.setTag(mDataset.get(position).getId());
         holder.tvDuree.setText(mDataset.get(position).getDuree().toString());
+        holder.buttonUpdate.setTag(mDataset.get(position).getId());
         holder.tvDesc.setText(mDataset.get(position).getDesc());
+        holder.buttonDelete.setTag(mDataset.get(position).getId());
     }
 
     @Override
@@ -59,14 +49,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public ConstraintLayout layout;
         public TextView tvTitle;
         public TextView tvDuree;
         public TextView tvDesc;
+        public ImageButton buttonUpdate;
+        public ImageButton buttonDelete;
         public MyViewHolder(@NonNull View view) {
             super(view);
+            layout = view.findViewById(R.id.layout);
             tvTitle = view.findViewById(R.id.Title);
             tvDuree = view.findViewById(R.id.Duree);
             tvDesc = view.findViewById(R.id.Desc);
+            buttonUpdate = view.findViewById(R.id.deleteButton);
+            buttonDelete = view.findViewById(R.id.updateButton);
         }
     }
 }

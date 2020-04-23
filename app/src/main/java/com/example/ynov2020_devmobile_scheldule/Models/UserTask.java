@@ -5,18 +5,18 @@ import java.util.Date;
 import java.util.Timer;
 
 public class UserTask {
-    private int id;
+    private long id;
     private String titre;
     private Time duree;
     private String desc;
     private Date[] recurrence;
-    private int nbrRappels;
+    private long nbrRappels;
     private boolean estFinie;
 
     public UserTask() {
         this.id = 0;
         this.titre = "";
-        this.duree = new Time(1,0,0);
+        this.duree = new Time(3600);
         this.desc = "Une tache";
         this.recurrence = new Date[]{};
         this.nbrRappels = 1;
@@ -26,14 +26,14 @@ public class UserTask {
     public UserTask(String pfTitre) {
         this.id = 0;
         this.titre = (String) pfTitre;
-        this.duree = new Time(1,0,0);
+        this.duree = new Time(3600);
         this.desc = "Une description de tâche";
         this.recurrence = new Date[]{};
         this.nbrRappels = 1;
         this.estFinie = false;
     }
 
-    public UserTask(String pfTitre, Time pfDuree, String pfDesc, int pfNbrRappels){
+    public UserTask(String pfTitre, Time pfDuree, String pfDesc, long pfNbrRappels){
         this.id = 0;
         this.titre = pfTitre;
         this.duree = pfDuree;
@@ -43,7 +43,7 @@ public class UserTask {
         this.estFinie = false;
     }
 
-    public UserTask(int pfId, String pfTitre, Time pfDuree, String pfDesc, int pfNbrRappels){
+    public UserTask(long pfId, String pfTitre, Time pfDuree, String pfDesc, long pfNbrRappels){
         this.id = pfId;
         this.titre = pfTitre;
         this.duree = pfDuree;
@@ -51,6 +51,28 @@ public class UserTask {
         this.recurrence = new Date[]{};
         this.nbrRappels = pfNbrRappels;
         this.estFinie = false;
+    }
+
+    public UserTask(long pfId, String pfTitre, Time pfDuree, String pfDesc, long pfNbrRappels, boolean pfState){
+        this.id = pfId;
+        this.titre = pfTitre;
+        this.duree = pfDuree;
+        this.desc = pfDesc;
+        this.recurrence = new Date[]{};
+        this.nbrRappels = pfNbrRappels;
+        this.estFinie = pfState;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setNbrRappels(long nbrRappels) {
+        this.nbrRappels = nbrRappels;
     }
 
     public String getTitre() {
@@ -79,7 +101,7 @@ public class UserTask {
 
     public void addRecurrence(Date pfDate){this.recurrence[-1] = pfDate;}
 
-    public int getNbrRappels() {
+    public long getNbrRappels() {
         return nbrRappels;
     }
 
@@ -93,10 +115,6 @@ public class UserTask {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public boolean isEstFinie() {
-        return estFinie;
     }
 
     public void setEstFinie() {

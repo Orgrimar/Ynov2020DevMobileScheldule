@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.ynov2020_devmobile_scheldule.Models.UserTask;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,36 +25,11 @@ import java.util.Objects;
 public class UserTaskHelper {
     private static final String COLLECTION_NAME = "UserTask";
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private static ArrayList<UserTask> dataAL = new ArrayList<>();
     // --- COLLECTION REFERENCE ---
 
     public static CollectionReference getTasksCollection(){
         return db.collection(COLLECTION_NAME);
-    }
-
-    public static ArrayList getAllToArrayList(){
-        final ArrayList<UserTask> dataAL = new ArrayList<>();
-        getTasksCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot document = task.getResult();
-                    if (document != null) {
-                        Log.d("DATA", "Données récupérés ! ");
-                        for (QueryDocumentSnapshot UserTask : document) {
-                            Log.d("DATA", String.valueOf(UserTask.getData()));
-                            //dataAL.add(new UserTask(Integer.parseInt((String) UserTask.getData().get("id")), (String) UserTask.getData().get("id")));
-                        }
-                    } else {
-                        Log.d("DATA", "Aucune donnée présente en base");
-                    }
-                } else {
-                    Log.d("DATA", "get failed with ", task.getException());
-                }
-            }
-        });
-
-        return dataAL;
     }
 
     // --- CREATE ---
