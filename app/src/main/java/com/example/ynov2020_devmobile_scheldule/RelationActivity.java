@@ -3,11 +3,10 @@ package com.example.ynov2020_devmobile_scheldule;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,8 +22,11 @@ public class RelationActivity extends AppCompatActivity {
 
     final static String TAG = "RelationActivity";
 
-    private RecyclerView mListRelation;
-    ArrayAdapter<String> listChildren;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdaptater;
+    private RecyclerView.LayoutManager layoutManager;
+
+    ArrayList<String> listChildren = new ArrayList<String>();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -34,8 +36,11 @@ public class RelationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relation);
 
-        mListRelation = (RecyclerView) findViewById(R.id.listRelation);
-        listChildren = new ArrayAdapter<String>(mListRelation.getContext(), R.layout.activity_relation, R.id.listRelation);
+        recyclerView = (RecyclerView) findViewById(R.id.listRelation);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     public void onStart() {
@@ -72,11 +77,14 @@ public class RelationActivity extends AppCompatActivity {
 
         ArrayList<String> relationValue = (ArrayList<String>) src.get(user.getUid());
         while (i<relationValue.size()) {
-            Log.d(TAG, relationValue.get(i));
-            listChildren.add(relationValue.get(i));
+            String child = relationValue.get(i);
+            Log.d(TAG, "Enfant : " + child);
+            listChildren.add(i, child);
+            Log.d(TAG, listChildren.get(i));
             i++;
         }
-        Log.d(TAG, listChildren.getItem(1));
-        //mListRelation.setAdapter(listChildren);
+
+        mAdaptater = new AdaptaterChildren(listChildren);
+        recyclerView.setAdapter(mAdaptater);
     }
 }
