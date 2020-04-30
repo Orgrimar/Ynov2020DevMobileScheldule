@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +21,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthentificationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,8 +38,12 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
 
     private EditText mEmailField;
     private EditText mPasswordField;
+    private EditText mPseudo;
+
+    private CheckBox mUserRole;
 
     private FirebaseAuth mAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private boolean isParent = false;
 
@@ -48,6 +57,9 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
+        mPseudo = findViewById(R.id.fieldPseudo);
+
+        mUserRole = findViewById(R.id.checkParent);
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
@@ -60,11 +72,15 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser, false);
+        updateUI(currentUser);
     }
 
     @SuppressLint("LongLogTag")
-    private void createAccount(String email, String password) {
+    private void createAccount(String email, String password,@NonNull String name, boolean isParent) {
+        final Map<String, Object> userData = new HashMap<>();
+        userData.put("pseudo", name);
+        userData.put("role", isParent);
+
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
@@ -76,11 +92,24 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                 if (task.isSuccessful()) {
                     Log.d(TAG, "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user, true);
+
+                    db.collection("User").document(user.getUid()).set(userData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });
+
+                    updateUI(user);
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                     Toast.makeText(AuthentificationActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                    updateUI(null, false);
+                    updateUI(null);
                 }
             }
         });
@@ -99,11 +128,11 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                 if (task.isSuccessful()) {
                     Log.d(TAG, "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user, false);
+                    updateUI(user);
                 } else {
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
                     Toast.makeText(AuthentificationActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                    updateUI(null, false);
+                    updateUI(null);
                 }
 
                 if (!task.isSuccessful()) {
@@ -135,7 +164,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
         return valid;
     }
 
-    private void updateUI(final FirebaseUser user, boolean newUser) {
+    private void updateUI(final FirebaseUser user) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         if (user != null) {
@@ -145,50 +174,8 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
 
-            if (newUser == true) {
-                db.collection("role").document("ZNRy4uTqZZirxwQsozmA").update(user.getUid(),true).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @SuppressLint("LongLogTag")
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot succefully update!");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @SuppressLint("LongLogTag")
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
-                    }
-                });
-            }
-
-            db.collection("role").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, "Parent => " + document.get(user.getUid()));
-                            if ((Boolean) document.get(user.getUid()) == true) {
-                                isParent = true;
-                            }
-
-                            /*if (isParent == true) {
-                                Log.d(TAG, "Parent is connected.");
-                                Intent intent = new Intent(AuthentificationActivity.this, RelationActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Log.d(TAG, "Children is connected.");
-                                Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
-                                startActivity(intent);
-                            }*/
-                            Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
-                            startActivity(intent);
-                        }
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
-                    }
-                }
-            });
+            Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
+            startActivity(intent);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
@@ -202,7 +189,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.emailCreateAccountButton) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString(), mPseudo.getText().toString(), mUserRole.isChecked());
         } else if (i == R.id.emailSignInButton) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }
@@ -210,7 +197,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
 
     public void onDestroy() {
         mAuth.signOut();
-        updateUI(null, false);
+        updateUI(null);
         super.onDestroy();
     }
 }

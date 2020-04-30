@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -52,7 +53,8 @@ public class ConfigActivity extends AppCompatActivity {
 
     private CheckBox mUserRole;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    DocumentReference userData = FirebaseFirestore.getInstance().collection("User").document(user.getUid());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         String name = null;
         String email = null;
 
@@ -74,26 +76,26 @@ public class ConfigActivity extends AppCompatActivity {
             Log.d(TAG, user.getUid());
 
             for (UserInfo profile : user.getProviderData()) {
-                name = profile.getDisplayName();
                 email = profile.getEmail();
             }
-
-            mNameUser.setText(name);
-            mEmailUser.setText(email);
-
-            db.collection("role").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            userData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.get(user.getUid()));
-                            mUserRole.setChecked((Boolean) document.get(user.getUid()));
+                        DocumentSnapshot doc = task.getResult();
+                        if (doc.exists()) {
+                            Log.d(TAG, "Document snapshot data: " + doc.get("pseudo"));
+                            mNameUser.setText(doc.get("pseudo").toString());
+                            mUserRole.setChecked((Boolean) doc.get("role"));
+                        } else {
+                            Log.d(TAG, "No such document");
                         }
                     } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
+                        Log.d(TAG, "Get failed with ", task.getException());
                     }
                 }
             });
+            mEmailUser.setText(email);
         } else {
             Log.w(TAG, "Pas d'utilisateur connecté.");
         }
@@ -109,18 +111,17 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     public void updateProfile(View view) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final EditText name = (EditText) findViewById(R.id.userText) ;
+        Editable name = mNameUser.getText();
 
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(name.getText().toString()).build();
-
-        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+        userData.update("pseudo", name.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "User profile updated.");
-                }
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot succefully updated! ");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error updating document", e);
             }
         });
     }
@@ -160,11 +161,7 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     public void updateRole(View view) {
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final DocumentReference docRefRole = db.collection("role").document("ZNRy4uTqZZirxwQsozmA");
         boolean statusCheckBox = mUserRole.isChecked();
-
-        Log.d(TAG, String.valueOf(mUserRole.isChecked()));
 
         if (statusCheckBox == true) {
             statusCheckBox = false;
@@ -172,29 +169,15 @@ public class ConfigActivity extends AppCompatActivity {
             statusCheckBox = true;
         }
 
-        docRefRole.update(user.getUid(), statusCheckBox).addOnSuccessListener(new OnSuccessListener<Void>() {
+        userData.update("role", statusCheckBox).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                Log.d(TAG, "DocumentSnapshot succefully updated! ");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
-            }
-        });
-
-        db.collection("role").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.get(user.getUid()));
-                        mUserRole.setChecked((Boolean) document.get(user.getUid()));
-                    }
-                } else {
-                    Log.w(TAG, "Error getting documents.", task.getException());
-                }
+                Log.d(TAG, "Error updating document", e);
             }
         });
     }
