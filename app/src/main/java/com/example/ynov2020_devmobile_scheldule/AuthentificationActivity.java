@@ -172,7 +172,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                                 isParent = true;
                             }
 
-                            if (isParent == true) {
+                            /*if (isParent == true) {
                                 Log.d(TAG, "Parent is connected.");
                                 Intent intent = new Intent(AuthentificationActivity.this, RelationActivity.class);
                                 startActivity(intent);
@@ -180,7 +180,9 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                                 Log.d(TAG, "Children is connected.");
                                 Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
                                 startActivity(intent);
-                            }
+                            }*/
+                            Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
+                            startActivity(intent);
                         }
                     } else {
                         Log.w(TAG, "Error getting documents.", task.getException());
