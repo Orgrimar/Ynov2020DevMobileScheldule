@@ -120,4 +120,8 @@ public class UserTask {
     public void setEstFinie() {
         this.estFinie = !this.estFinie;
     }
+
+    public boolean getEstFinie() {
+        return estFinie;
+    }
 }

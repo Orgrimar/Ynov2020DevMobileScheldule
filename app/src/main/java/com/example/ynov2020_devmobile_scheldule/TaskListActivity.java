@@ -9,15 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ynov2020_devmobile_scheldule.API.UserTaskHelper;
 import com.example.ynov2020_devmobile_scheldule.Models.UserTask;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -25,13 +24,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TaskListActivity extends AppCompatActivity {
+    private Date date;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private static final String COLLECTION_NAME = "UserTask";
-    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    protected static final String COLLECTION_NAME = "UserTask";
+    protected static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<UserTask> tabtask;
 
     @Override
@@ -53,17 +54,15 @@ public class TaskListActivity extends AppCompatActivity {
         if(true){
             fab.show();
         }
-        recyclerView = (RecyclerView) findViewById(R.id.listTask);
 
-        recyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
     }
 
     public void onStart() {
         super.onStart();
+        loadDataListItem();
+    }
+
+    public void loadDataListItem(){
         db.collection(COLLECTION_NAME).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -80,19 +79,16 @@ public class TaskListActivity extends AppCompatActivity {
                 }
             }
         });
-       // tabtask = UserTaskHelper.getAllToArrayList();
-        //Toast.makeText(this, tabtask.get(0).getTitre(), Toast.LENGTH_SHORT).show();
-       /*
-        tabtask = new ArrayList<>();
-        for (int i = 0 ; i < 40 ; i++){
-            tabtask.add(new UserTask("Tâche " + i));
-        }
-        */
-        // specify an adapter (see also next example)
-
     }
 
     public void loadListItem(QuerySnapshot document){
+        recyclerView = (RecyclerView) findViewById(R.id.listTask);
+
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         ArrayList<UserTask> tempData = new ArrayList<>();
         for (QueryDocumentSnapshot UserTask : document) {
             Log.d("DATA", String.valueOf(UserTask.getData()));
@@ -128,9 +124,13 @@ public class TaskListActivity extends AppCompatActivity {
         TextView tvTitre = findViewById(R.id.title);
         TextView tvDesc = findViewById(R.id.Desc);
         TextView tvDuree = findViewById(R.id.Duree);
+        Button validButton = findViewById(R.id.validButton);
         tvTitre.setText(us.getTitre());
         tvDesc.setText(us.getDesc());
         tvDuree.setText(us.getDuree().toString());
+        validButton.setTag(us.getId());
+        if(us.getEstFinie())
+            validButton.setVisibility(View.GONE);
     }
 
     public void deleteItem(View view){
@@ -144,5 +144,12 @@ public class TaskListActivity extends AppCompatActivity {
     public void readItem(View view){
         Toast.makeText(this, "ID elem = " +view.getTag().toString(), Toast.LENGTH_SHORT).show();
         getTaskBDD(view.getTag().toString());
+    }
+
+    public void validTask(View view){
+        Toast.makeText(this, "ID elem = " +view.getTag().toString(), Toast.LENGTH_SHORT).show();
+        db.collection(COLLECTION_NAME).document(toString().valueOf(view.getTag().toString())).update("estFinie", true);
+        setContentView(R.layout.activity_task_list);
+        loadDataListItem();
     }
 }

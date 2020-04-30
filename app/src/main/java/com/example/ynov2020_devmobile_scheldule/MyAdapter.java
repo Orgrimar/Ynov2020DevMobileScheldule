@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 import io.opencensus.tags.TagMetadata;
 
+
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private ArrayList<UserTask> mDataset;
 
@@ -41,6 +43,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.buttonUpdate.setTag(mDataset.get(position).getId());
         holder.tvDesc.setText(mDataset.get(position).getDesc());
         holder.buttonDelete.setTag(mDataset.get(position).getId());
+        if(mDataset.get(position).getEstFinie())
+            holder.layout.setBackgroundResource(R.color.taskValidated);
     }
 
     @Override
