@@ -63,6 +63,7 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     public void loadDataListItem(){
+        //db.collection(COLLECTION_NAME).w
         db.collection(COLLECTION_NAME).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

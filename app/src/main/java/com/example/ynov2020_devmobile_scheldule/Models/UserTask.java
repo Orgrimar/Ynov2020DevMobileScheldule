@@ -9,16 +9,18 @@ public class UserTask {
     private String titre;
     private Time duree;
     private String desc;
-    private Date[] recurrence;
+    private Date date;
     private long nbrRappels;
+    private boolean recurrence;
     private boolean estFinie;
+    private int idEnfant;
 
     public UserTask() {
         this.id = 0;
         this.titre = "";
         this.duree = new Time(3600);
         this.desc = "Une tache";
-        this.recurrence = new Date[]{};
+        this.date = new Date();
         this.nbrRappels = 1;
         this.estFinie = false;
     }
@@ -28,8 +30,9 @@ public class UserTask {
         this.titre = (String) pfTitre;
         this.duree = new Time(3600);
         this.desc = "Une description de tâche";
-        this.recurrence = new Date[]{};
+        this.date = new Date();
         this.nbrRappels = 1;
+        this.recurrence = false;
         this.estFinie = false;
     }
 
@@ -38,18 +41,9 @@ public class UserTask {
         this.titre = pfTitre;
         this.duree = pfDuree;
         this.desc = pfDesc;
-        this.recurrence = new Date[]{};
+        this.date = new Date();
         this.nbrRappels = pfNbrRappels;
-        this.estFinie = false;
-    }
-
-    public UserTask(long pfId, String pfTitre, Time pfDuree, String pfDesc, long pfNbrRappels){
-        this.id = pfId;
-        this.titre = pfTitre;
-        this.duree = pfDuree;
-        this.desc = pfDesc;
-        this.recurrence = new Date[]{};
-        this.nbrRappels = pfNbrRappels;
+        this.recurrence = false;
         this.estFinie = false;
     }
 
@@ -58,8 +52,20 @@ public class UserTask {
         this.titre = pfTitre;
         this.duree = pfDuree;
         this.desc = pfDesc;
-        this.recurrence = new Date[]{};
+        this.date = new Date();
         this.nbrRappels = pfNbrRappels;
+        this.recurrence = false;
+        this.estFinie = pfState;
+    }
+
+    public UserTask(long pfId, String pfTitre, Time pfDuree, String pfDesc, Date pfDate, long pfNbrRappels, boolean pfRecurrence, boolean pfState){
+        this.id = pfId;
+        this.titre = pfTitre;
+        this.duree = pfDuree;
+        this.desc = pfDesc;
+        this.date = pfDate;
+        this.nbrRappels = pfNbrRappels;
+        this.recurrence = pfRecurrence;
         this.estFinie = pfState;
     }
 
@@ -91,15 +97,13 @@ public class UserTask {
         this.duree = duree;
     }
 
-    public Date[] getRecurrence() {
-        return recurrence;
+    public Date getDate() {
+        return date;
     }
 
-    public void setRecurrence(Date[] recurrence) {
-        this.recurrence = recurrence;
+    public void setDate(Date date) {
+        this.date = date;
     }
-
-    public void addRecurrence(Date pfDate){this.recurrence[-1] = pfDate;}
 
     public long getNbrRappels() {
         return nbrRappels;

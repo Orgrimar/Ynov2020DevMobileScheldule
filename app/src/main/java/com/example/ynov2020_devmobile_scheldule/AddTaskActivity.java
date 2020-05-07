@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,12 +43,10 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         date = intent.getStringExtra("date");
-        trueDate = new Date(date);
         setContentView(R.layout.activity_add_task);
     }
 
-    public void sendData(View view) {
-        getLastId();
+    public void sendData() {
         EditText etTitle = findViewById(R.id.TitleNew);
         String title = etTitle.getText().toString();
 
@@ -58,21 +60,32 @@ public class AddTaskActivity extends AppCompatActivity {
         EditText etRappels = findViewById(R.id.rappels);
         String rappel = etRappels.getText().toString();
 
+        EditText etHeure = findViewById(R.id.hour);
+        String sHeure = etHeure.getText().toString();
+        int heure = Integer.valueOf(sHeure);
+        EditText etMin = findViewById(R.id.minute);
+        int minute = Integer.valueOf(etMin.getText().toString());
 
+        CalendarView vCalendar = findViewById(R.id.calendarView2);
+        Date dateSelected = new Date(vCalendar.getDate());
+        dateSelected.setHours(heure);
+        dateSelected.setMinutes(minute);
 
-        UserTask newUserTask = new UserTask(lastId +1 , title, duree, desc, Integer.parseInt(rappel));
+        CheckBox hebdo = findViewById(R.id.checkHebdo);
+
         Map<String, Object> userTaskData = new HashMap<>();
         userTaskData.put("id", lastId + 1 );
         userTaskData.put("titre", title);
-        userTaskData.put("duree", new Timestamp(duree));
+        userTaskData.put("duree", LDuree);
         userTaskData.put("desc", desc );
         userTaskData.put("nbrRappels", Integer.parseInt(rappel));
-        //userTaskData.put("recurrence", new Date[]{trueDate});
+        userTaskData.put("date", dateSelected);
+        userTaskData.put("recurrence", hebdo.isChecked());
         userTaskData.put("estFinie", false );
 
         //Ajout BDD
         Log.d("DATA", "Données prêtes ! ");
-        db.collection(COLLECTION_NAME).document(String.valueOf(newUserTask.getId() + 2)).set(userTaskData).addOnSuccessListener(new OnSuccessListener < Void > () {
+        db.collection(COLLECTION_NAME).document(String.valueOf(lastId + 1)).set(userTaskData).addOnSuccessListener(new OnSuccessListener < Void > () {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(AddTaskActivity.this, "Task Registered",
@@ -93,7 +106,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     }
 
-    public void getLastId(){
+    public void getLastId(View view){
         TaskListActivity.db.collection(TaskListActivity.COLLECTION_NAME).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -102,6 +115,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     if (document != null) {
                         Log.d("DATA", "Données récupérées ! ");
                         lastId = document.size();
+                        sendData();
                     } else {
                         Log.d("DATA", "Aucune donnée présente en base");
                     }
