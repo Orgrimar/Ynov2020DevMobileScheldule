@@ -76,10 +76,13 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
     }
 
     @SuppressLint("LongLogTag")
-    private void createAccount(String email, String password,@NonNull String name, boolean isParent) {
+    private void createAccount(String email, String password, @NonNull String name, final boolean isParent) {
         final Map<String, Object> userData = new HashMap<>();
         userData.put("pseudo", name);
         userData.put("role", isParent);
+
+        final Map<String, Object> userRelationData = new HashMap<>();
+        userRelationData.put("0", 0);
 
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
@@ -104,6 +107,20 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                             Log.w(TAG, "Error adding document", e);
                         }
                     });
+
+                    if (isParent){
+                        db.collection("UserRelation").document(user.getUid()).set(userRelationData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                            }
+                        });
+                    }
 
                     updateUI(user);
                 } else {

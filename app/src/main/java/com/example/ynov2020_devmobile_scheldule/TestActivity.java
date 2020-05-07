@@ -114,22 +114,6 @@ public class TestActivity extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    /*public void OnClick(View view) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Log.d(TAG, user.getUid());
-            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,user.getEmail(), user.isEmailVerified()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-        } else {
-            Log.w(TAG, "Pas d'utilisateur connecté.");
-        }
-        startAlert();
-    }
-
-    public void startAlert(){
-
-    }*/
-
     public void OnConfig(View view) {
         Intent intent = new Intent(TestActivity.this, ConfigActivity.class);
         startActivity(intent);
