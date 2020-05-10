@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:animationCache="true"
         android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@+id/rappels"/>
+        app:layout_constraintTop_toBottomOf="@+id/rappels" />
 
 
     <EditText
@@ -93,6 +93,15 @@
         app:layout_constraintTop_toBottomOf="@+id/calendarView2"
         app:layout_constraintLeft_toRightOf="@+id/textView"/>
 
+    <EditText
+        android:id="@+id/childField"
+        android:layout_width="214dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:hint="Enfant"
+        app:layout_constraintStart_toEndOf="@+id/minute"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView2" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -108,5 +117,16 @@
         android:text="Hebdomadaire ?"
         app:layout_constraintLeft_toRightOf="@+id/rappels"
         app:layout_constraintTop_toBottomOf="@+id/Duree"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="1dp"
+        android:onClick="OnRelation"
+        android:text="Select"
+        app:layout_constraintStart_toEndOf="@+id/childField"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
