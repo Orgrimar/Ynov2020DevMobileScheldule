@@ -42,6 +42,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private String child;
 
     String idChild;
+    EditText nameChildren;
 
     CollectionReference dbUser = FirebaseFirestore.getInstance().collection("User");
 
@@ -53,7 +54,14 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
 
         Intent intentChild = getIntent();
-        child = intentChild.getExtras().getString("enfant");
+        child = (String) intentChild.getExtras().get("enfant");
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        nameChildren = findViewById(R.id.childField);
+        nameChildren.setText(child);
     }
 
     public void sendData() {
@@ -75,9 +83,6 @@ public class AddTaskActivity extends AppCompatActivity {
         int heure = Integer.valueOf(sHeure);
         EditText etMin = findViewById(R.id.minute);
         int minute = Integer.valueOf(etMin.getText().toString());
-
-        EditText nameChildren = findViewById(R.id.childField);
-        nameChildren.setText(child);
 
         CalendarView vCalendar = findViewById(R.id.calendarView2);
         Date dateSelected = new Date(vCalendar.getDate());
