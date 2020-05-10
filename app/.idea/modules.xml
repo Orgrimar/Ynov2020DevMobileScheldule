@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Ynov2020_DevMobile_Scheldule.iml" filepath="$PROJECT_DIR$/../Ynov2020_DevMobile_Scheldule.iml" group="Ynov2020_DevMobile_Scheldule" />
+      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" group="Ynov2020_DevMobile_Scheldule/app" />
+    </modules>
+  </component>
+</project>

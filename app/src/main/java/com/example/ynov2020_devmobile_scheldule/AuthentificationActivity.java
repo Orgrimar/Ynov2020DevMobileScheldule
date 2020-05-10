@@ -125,7 +125,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                     updateUI(user);
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(AuthentificationActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this, "Authentication failed : " + task.getException(), Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
             }
@@ -148,7 +148,7 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
                     updateUI(user);
                 } else {
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
-                    Toast.makeText(AuthentificationActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthentificationActivity.this, "Authentication failed : " + task.getException(),Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
 
@@ -191,7 +191,9 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
 
-            Intent intent = new Intent(AuthentificationActivity.this, TestActivity.class);
+            Intent intent = new Intent(AuthentificationActivity.this, MainActivity.class);
+            intent.putExtra("isParent", isParent);
+            sendBroadcast(intent);
             startActivity(intent);
         } else {
             mStatusTextView.setText(R.string.signed_out);

@@ -27,15 +27,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        final boolean isParent = intent.getExtras().getBoolean("isParent");
         CalendarView cv = findViewById(R.id.calendarView);
         cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
-                String date = year + "/" + month + "/"+ dayOfMonth ;
+                String date = year + "/" + (month+1) + "/"+ dayOfMonth ;
                 Log.d("DATE", "onSelectedDayChange: yyyy/mm/dd:" + date);
 
                 Intent intent = new Intent(MainActivity.this, TaskListActivity.class);
                 intent.putExtra("date",date);
+                intent.putExtra("isParent", isParent);
                 startActivity(intent);
 
             }
@@ -49,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Une erreur s'est produite", Toast.LENGTH_LONG).show();
             }
         };
+    }
+
+    public void OnConfig(View view) {
+        Intent intent = new Intent(MainActivity.this, ConfigActivity.class);
+        startActivity(intent);
     }
 
 }

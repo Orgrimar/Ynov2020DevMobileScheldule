@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.security.keystore.SecureKeyImportUnavailableException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,12 +18,14 @@ import com.example.ynov2020_devmobile_scheldule.Models.UserTask;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,7 +42,9 @@ public class TaskListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        final String date = intent.getStringExtra("date");
+        final boolean isParent = intent.getExtras().getBoolean("isParent");
+        final String Sdate = intent.getExtras().getString("date");
+        date = new Date(Sdate);
         setContentView(R.layout.activity_task_list);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,10 +56,11 @@ public class TaskListActivity extends AppCompatActivity {
             }
         });
        fab.hide();
-        if(true){
+        if(isParent){
             fab.show();
+        }else{
+            fab.hide();
         }
-
     }
 
     public void onStart() {
@@ -64,7 +70,11 @@ public class TaskListActivity extends AppCompatActivity {
 
     public void loadDataListItem(){
         //db.collection(COLLECTION_NAME).w
-        db.collection(COLLECTION_NAME).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Timestamp Tdate = new Timestamp(date.getTime());
+        Timestamp TendDate = new Timestamp(date.getTime() + 86400000);
+        Log.d("DATE", "DATE BEFORE : " + Tdate.toString());
+        Log.d("DATE", "DATE AFTER : " + TendDate.toString());
+        db.collection(COLLECTION_NAME).whereGreaterThan("date", Tdate).whereLessThan("date", TendDate).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -152,5 +162,10 @@ public class TaskListActivity extends AppCompatActivity {
         db.collection(COLLECTION_NAME).document(toString().valueOf(view.getTag().toString())).update("estFinie", true);
         setContentView(R.layout.activity_task_list);
         loadDataListItem();
+    }
+
+    public void OnConfig(View view) {
+        Intent intent = new Intent(TaskListActivity.this, ConfigActivity.class);
+        startActivity(intent);
     }
 }
