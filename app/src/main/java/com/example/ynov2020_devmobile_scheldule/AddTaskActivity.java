@@ -38,7 +38,6 @@ public class AddTaskActivity extends AppCompatActivity {
     protected static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int lastId;
     private Date date;
-    private Date trueDate;
     private String child;
 
     String idChild;
@@ -52,16 +51,14 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         date = (Date) intent.getExtras().get("date");
         setContentView(R.layout.activity_add_task);
-
-        Intent intentChild = getIntent();
-        child = (String) intentChild.getExtras().get("enfant");
+        child = (String) intent.getExtras().get("enfant");
     }
 
     public void onStart() {
         super.onStart();
 
-        nameChildren = findViewById(R.id.childField);
-        nameChildren.setText(child);
+        //nameChildren = findViewById(R.id.childField);
+        //nameChildren.setText(child);
     }
 
     public void sendData() {
@@ -100,7 +97,7 @@ public class AddTaskActivity extends AppCompatActivity {
         userTaskData.put("date", dateSelected);
         userTaskData.put("recurrence", hebdo.isChecked());
         userTaskData.put("estFinie", false );
-
+/*
         dbUser.whereEqualTo("pseudo", child).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -117,7 +114,7 @@ public class AddTaskActivity extends AppCompatActivity {
         });
 
         userTaskData.put("idUserChild", idChild);
-
+*/
         //Ajout BDD
         Log.d("DATA", "Données prêtes ! ");
         db.collection(COLLECTION_NAME).document(String.valueOf(lastId + 1)).set(userTaskData).addOnSuccessListener(new OnSuccessListener < Void > () {
@@ -137,6 +134,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 });
         Log.d("DATA", "Nouvelle tâche ajoutée ! ");
         Intent intent = new Intent(AddTaskActivity.this, TaskListActivity.class);
+        intent.putExtra("date", date.toString());
         startActivity(intent);;
 
     }
@@ -160,9 +158,12 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         });
     }
-
+/*
     public void OnRelation(View view) {
         Intent intent = new Intent(AddTaskActivity.this, RelationActivity.class);
+        intent.putExtra("date", date.toString());
         startActivity(intent);
     }
+
+ */
 }

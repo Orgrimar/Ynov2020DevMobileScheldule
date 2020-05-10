@@ -64,14 +64,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="getLastId"/>
-
+<!--
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@+id/Duree"
         app:layout_constraintTop_toTopOf="@id/Duree"
-        android:entries="@array/time__arrays"/>
+        android:entries="@array/time__arrays"/> -->
 
     <EditText
         android:id="@+id/hour"
@@ -92,7 +92,7 @@
         android:inputType="number"
         app:layout_constraintTop_toBottomOf="@+id/calendarView2"
         app:layout_constraintLeft_toRightOf="@+id/textView"/>
-
+<!--
     <EditText
         android:id="@+id/childField"
         android:layout_width="214dp"
@@ -100,7 +100,7 @@
         android:layout_marginTop="4dp"
         android:hint="Enfant"
         app:layout_constraintStart_toEndOf="@+id/minute"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView2" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarView2" />-->
 
     <TextView
         android:id="@+id/textView"
@@ -117,7 +117,7 @@
         android:text="Hebdomadaire ?"
         app:layout_constraintLeft_toRightOf="@+id/rappels"
         app:layout_constraintTop_toBottomOf="@+id/Duree"/>
-
+<!--
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
@@ -127,6 +127,6 @@
         android:onClick="OnRelation"
         android:text="Select"
         app:layout_constraintStart_toEndOf="@+id/childField"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView2" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarView2" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

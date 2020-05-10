@@ -193,6 +193,7 @@ public class TaskListActivity extends AppCompatActivity {
 
     public void OnConfig(View view) {
         Intent intent = new Intent(TaskListActivity.this, ConfigActivity.class);
+        intent.putExtra("date", date);
         startActivity(intent);
     }
 }

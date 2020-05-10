@@ -24,10 +24,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Date;
+
 public class AddChildrenActivity extends AppCompatActivity {
 
     final static String TAG = "AddChildrenActivity";
-
+private Date date;
     private EditText etChildName;
 
     private int relationDocSize;
@@ -40,6 +42,7 @@ public class AddChildrenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_children);
+        date = (Date) getIntent().getExtras().get("date");
 
         etChildName = findViewById(R.id.childNameField);
     }
@@ -93,6 +96,7 @@ public class AddChildrenActivity extends AppCompatActivity {
         });
 
         Intent intent = new Intent(AddChildrenActivity.this, RelationActivity.class);
+        intent.putExtra("date", date.toString());
         startActivity(intent);
     }
 }

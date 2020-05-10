@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class RelationActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class RelationActivity extends AppCompatActivity {
     final static String TAG = "RelationActivity";
 
     private TextView mMailNewChild;
-
+    private Date date;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdaptater;
     private RecyclerView.LayoutManager layoutManager;
@@ -44,7 +45,7 @@ public class RelationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relation);
-
+        date = (Date) getIntent().getExtras().get("date");
         recyclerView = (RecyclerView) findViewById(R.id.listRelation);
         recyclerView.setHasFixedSize(true);
 
@@ -88,6 +89,7 @@ public class RelationActivity extends AppCompatActivity {
 
     public void OnAddChildren(View view) {
         Intent intent = new Intent(RelationActivity.this, AddChildrenActivity.class);
+        intent.putExtra("date", date.toString());
         startActivity(intent);
     }
 
@@ -96,6 +98,7 @@ public class RelationActivity extends AppCompatActivity {
         Log.d(String.valueOf(this),child);
         Intent intent = new Intent(RelationActivity.this, AddTaskActivity.class);
         intent.putExtra("enfant", child);
+        intent.putExtra("date", date.toString());
         startActivity(intent);
     }
 }
