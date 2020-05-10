@@ -18,3 +18,9 @@ Difficultés rencontrées:
 - Manque de connaissances par rapport à la techno (Firebase et Java)
 - Mauvaise organisation d'équipe
 - Un des membres absent la majeure partie du projet
+
+
+Membres du projet :
+- Guillaume Navarro (Adrameleck sur Github)
+- Albert Ozouaki (Oz)
+- Jérôme Polato (Orgrimar)
