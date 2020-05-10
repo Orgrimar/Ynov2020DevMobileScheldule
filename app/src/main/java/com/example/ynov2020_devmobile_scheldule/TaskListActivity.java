@@ -11,6 +11,7 @@ import android.security.keystore.SecureKeyImportUnavailableException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -36,17 +39,46 @@ public class TaskListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     protected static final String COLLECTION_NAME = "UserTask";
     protected static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    DocumentReference userData = FirebaseFirestore.getInstance().collection("User").document(user.getUid());
     private ArrayList<UserTask> tabtask;
+    private boolean isParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        final boolean isParent = intent.getExtras().getBoolean("isParent");
         final String Sdate = intent.getExtras().getString("date");
         date = new Date(Sdate);
+        userData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                 @Override
+                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                     if (task.isSuccessful()) {
+                                                         DocumentSnapshot document = task.getResult();
+                                                         if (document != null) {
+                                                             Log.d("DATA", "Données récupérés ! data = " + document.getData());
+                                                             setRole(document);
+                                                         } else {
+                                                             Log.d("DATA", "Aucune donnée présente en base");
+                                                         }
+                                                     } else {
+                                                         Log.d("DATA", "get failed with ", task.getException());
+                                                     }
+                                                 }
+                                             }
+        );
         setContentView(R.layout.activity_task_list);
+    }
+
+    public void onStart() {
+        super.onStart();
+        loadDataListItem();
+    }
+
+    private void setRole(DocumentSnapshot document){
+        isParent = (boolean) document.get("role");
         FloatingActionButton fab = findViewById(R.id.fab);
+        ImageButton ib = findViewById(R.id.setting);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,17 +87,12 @@ public class TaskListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-       fab.hide();
         if(isParent){
             fab.show();
         }else{
             fab.hide();
+            ib.setVisibility(View.GONE);
         }
-    }
-
-    public void onStart() {
-        super.onStart();
-        loadDataListItem();
     }
 
     public void loadDataListItem(){

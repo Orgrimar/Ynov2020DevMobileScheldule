@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,6 +65,27 @@ public class ConfigActivity extends AppCompatActivity {
         mNameUser = findViewById(R.id.userText);
         mEmailUser = findViewById(R.id.mailText);
         mUserRole = findViewById(R.id.isParentCheckBox);
+        final TextView tUserRole = findViewById(R.id.textView);
+        userData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                 @Override
+                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                     if (task.isSuccessful()) {
+                                                         DocumentSnapshot document = task.getResult();
+                                                         if (document != null) {
+                                                             Log.d("DATA", "Données récupérés ! data = " + document.getData());
+                                                             if(!(boolean)document.get("role")) {
+                                                                 mUserRole.setVisibility(View.GONE);
+                                                                 tUserRole.setVisibility(View.GONE);
+                                                             }
+                                                         } else {
+                                                             Log.d("DATA", "Aucune donnée présente en base");
+                                                         }
+                                                     } else {
+                                                         Log.d("DATA", "get failed with ", task.getException());
+                                                     }
+                                                 }
+                                             }
+        );
     }
 
     public void onStart() {

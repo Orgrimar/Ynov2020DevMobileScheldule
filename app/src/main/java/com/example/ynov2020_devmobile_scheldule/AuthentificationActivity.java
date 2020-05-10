@@ -45,8 +45,6 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
     private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private boolean isParent = false;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,8 +190,6 @@ public class AuthentificationActivity extends AppCompatActivity implements View.
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
 
             Intent intent = new Intent(AuthentificationActivity.this, MainActivity.class);
-            intent.putExtra("isParent", isParent);
-            sendBroadcast(intent);
             startActivity(intent);
         } else {
             mStatusTextView.setText(R.string.signed_out);

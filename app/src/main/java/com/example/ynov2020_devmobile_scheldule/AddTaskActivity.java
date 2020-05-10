@@ -37,7 +37,7 @@ public class AddTaskActivity extends AppCompatActivity {
     protected static final String COLLECTION_NAME = "UserTask";
     protected static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int lastId;
-    private String date;
+    private Date date;
     private Date trueDate;
     private String child;
 
@@ -49,11 +49,11 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        date = intent.getStringExtra("date");
+        date = (Date) intent.getExtras().get("date");
         setContentView(R.layout.activity_add_task);
 
         Intent intentChild = getIntent();
-        child = intentChild.getStringExtra("enfant");
+        child = intentChild.getExtras().getString("enfant");
     }
 
     public void sendData() {
