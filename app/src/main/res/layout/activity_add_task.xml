@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTaskActivity">
+
+    <EditText
+        android:id="@+id/TitleNew"
+        android:layout_width="214dp"
+        android:layout_height="40dp"
+        android:hint="Titre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/Duree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="time"
+        android:hint="Durée de la tâche"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TitleNew" />
+
+    <CalendarView
+        android:id="@+id/calendarView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animationCache="true"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@+id/rappels"/>
+
+
+    <EditText
+        android:id="@+id/Desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hour" />
+
+    <EditText
+        android:id="@+id/rappels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Nombre de rappels"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Duree" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="163dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="63dp"
+        android:text="Ajouter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="getLastId"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/Duree"
+        app:layout_constraintTop_toTopOf="@id/Duree"
+        android:entries="@array/time__arrays"/>
+
+    <EditText
+        android:id="@+id/hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="2"
+        android:hint="hh"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView2"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <EditText
+        android:id="@+id/minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="2"
+        android:hint="mm"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView2"
+        app:layout_constraintLeft_toRightOf="@+id/textView"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView2"
+        app:layout_constraintLeft_toRightOf="@+id/hour"/>
+
+    <CheckBox
+        android:id="@+id/checkHebdo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hebdomadaire ?"
+        app:layout_constraintLeft_toRightOf="@+id/rappels"
+        app:layout_constraintTop_toBottomOf="@+id/Duree"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
