@@ -18,7 +18,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Time;
@@ -37,6 +39,11 @@ public class AddTaskActivity extends AppCompatActivity {
     private int lastId;
     private String date;
     private Date trueDate;
+    private String child;
+
+    String idChild;
+
+    CollectionReference dbUser = FirebaseFirestore.getInstance().collection("User");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,9 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         date = intent.getStringExtra("date");
         setContentView(R.layout.activity_add_task);
+
+        Intent intentChild = getIntent();
+        child = intentChild.getStringExtra("enfant");
     }
 
     public void sendData() {
@@ -66,6 +76,9 @@ public class AddTaskActivity extends AppCompatActivity {
         EditText etMin = findViewById(R.id.minute);
         int minute = Integer.valueOf(etMin.getText().toString());
 
+        EditText nameChildren = findViewById(R.id.childField);
+        nameChildren.setText(child);
+
         CalendarView vCalendar = findViewById(R.id.calendarView2);
         Date dateSelected = new Date(vCalendar.getDate());
         dateSelected.setHours(heure);
@@ -82,6 +95,23 @@ public class AddTaskActivity extends AppCompatActivity {
         userTaskData.put("date", dateSelected);
         userTaskData.put("recurrence", hebdo.isChecked());
         userTaskData.put("estFinie", false );
+
+        dbUser.whereEqualTo("pseudo", child).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Log.d(String.valueOf(this), doc.getId() + " => " + doc.get("pseudo"));
+
+                        idChild = doc.getId();
+                    }
+                } else {
+                    Log.d(String.valueOf(this), "Error getting documents : ", task.getException());
+                }
+            }
+        });
+
+        userTaskData.put("idUserChild", idChild);
 
         //Ajout BDD
         Log.d("DATA", "Données prêtes ! ");
@@ -124,5 +154,10 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void OnRelation(View view) {
+        Intent intent = new Intent(AddTaskActivity.this, RelationActivity.class);
+        startActivity(intent);
     }
 }

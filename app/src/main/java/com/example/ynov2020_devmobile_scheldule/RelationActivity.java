@@ -90,4 +90,11 @@ public class RelationActivity extends AppCompatActivity {
         Intent intent = new Intent(RelationActivity.this, AddChildrenActivity.class);
         startActivity(intent);
     }
+
+    public void OnSelectChildren(View view) {
+        String child = view.getTag().toString();
+        Intent intent = new Intent(RelationActivity.this, AddTaskActivity.class);
+        intent.putExtra("enfant", child);
+        startActivity(intent);
+    }
 }
